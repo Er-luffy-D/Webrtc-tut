@@ -1,68 +1,101 @@
-# WebRTC
+# WebRTC: Real-Time Communication in the Browser
 
-WebRTC is a protocol that enables real-time communication directly from within a browser.
+WebRTC (Web Real-Time Communication) is a powerful protocol that enables direct, low-latency communication—audio, video, or data—between browsers without requiring any plugins.
 
-It is particularly useful in scenarios where high latency is not acceptable.
-
----
-
-## Comparison with Other Streaming Technologies
-
-- **HLS**: ~10s delay (commonly used in cricket matches, YouTube live streams, etc.)
-- **WebRTC**: ~0.1s delay (used in Google Meet, etc.)
+> ✅ Ideal for real-time applications like video conferencing, live broadcasting, and interactive games.
 
 ---
 
-## Common WebRTC Jargon
+## ⚖️ WebRTC vs. Other Streaming Technologies
 
-### 1. P2P (Peer-to-Peer)
+| Technology | Typical Latency | Use Cases |
+|-----------|----------------|-----------|
+| **HLS**   | ~10 seconds    | YouTube Live, sports streaming |
+| **WebRTC**| ~0.1 seconds   | Google Meet, live classrooms   |
 
-A direct connection between two peers that allows them to send data/media without needing a central server.
+---
 
-### 2. Signaling Server
+## 🔑 WebRTC Key Concepts
 
-Before browsers can communicate directly, they need to exchange network information. A signaling server facilitates this exchange.
+### 1. 📡 P2P (Peer-to-Peer)
+Direct connection between two users for real-time communication, minimizing delay and server costs.
 
-### 3. STUN (Session Traversal Utilities for NAT)
+### 2. 🛰️ Signaling Server
+Facilitates the initial exchange of connection details like ICE candidates and SDP—essential for establishing the peer-to-peer connection.
 
-STUN servers help determine a device's public IP address and provide ICE (IP combination) candidates. These candidates are sent to the other browser via the signaling server.
+### 3. 🌍 STUN (Session Traversal Utilities for NAT)
+Helps discover public IP addresses behind NAT (Network Address Translation).
 
-> Once both browsers have exchanged the necessary information, the signaling and STUN servers are no longer needed for communication.
+### 4. 🌐 ICE Candidates
+Network endpoint options shared between browsers to determine the best connection path.
 
-### 4. ICE Candidates (Interactive Connectivity Establishment)
+### 5. 🔁 TURN Server
+Relays data if a direct P2P connection cannot be established due to strict firewalls or NAT.
 
-These are potential networking endpoints used to establish a connection between peers.
+### 6. 📤 Offer & 📥 Answer
+- **Offer**: Initiator sends its media configuration and ICE candidates.
+- **Answer**: Receiver responds with its configuration.
 
-### 5. TURN Server
-
-If a network is too restrictive and blocks peer-to-peer connections, a TURN server is used to relay media between the two browsers.
-
-### 6. Offer
-
-The process where the initiating browser sends its ICE candidates to the other browser.
-
-### 7. Answer
-
-The response from the receiving browser containing its own ICE candidates.
-
-### 8. SDP (Session Description Protocol)
-
-A file or string that contains:
-
+### 7. 📄 SDP (Session Description Protocol)
+Contains metadata including:
+- Codec info
+- Media capabilities
 - ICE candidates
-- Media types and formats to be shared
-- Encoding protocols used
 
-### 9. RTCPeerConnection
-
-A browser-provided class that:
-
-- Allows you to work with SDP
-- Lets you create offers and answers
-- Functions similarly to the `fetch` or `WebSocket` APIs
+### 8. 🔧 RTCPeerConnection API
+Core WebRTC API enabling:
+- Creation of offers/answers
+- Adding media tracks
+- Monitoring connection state
 
 ---
 
-## Summary
+## 🧱 Architectures Built on WebRTC
 
-WebRTC is a powerful browser-based protocol for low-latency, peer-to-peer communication. It's essential for modern web applications that require real-time audio, video, or data sharing.
+### 1. SFU (Selective Forwarding Unit)
+
+Each client sends its media stream to the SFU, which then forwards them to all other participants without decoding them.
+
+**Popular SFUs**: 
+- [mediasoup](https://mediasoup.org/)
+- [Pion](https://pion.ly/) (can be used to build SFUs)
+
+**Diagram**:
+```
+ [Client A] -->       |
+ [Client B] -->  SFU  |--> [Client A, B, C]
+ [Client C] -->       |
+```
+
+### 2. MCU (Multipoint Control Unit)
+
+Server receives all streams, decodes them, merges them into a single stream, then sends the result back to all participants.
+
+**Steps**:
+- Decode incoming streams (e.g. using FFmpeg)
+- Mix into a single stream
+- Broadcast the combined output
+
+**Diagram**:
+```
+[Client A] --> 
+[Client B] -->  MCU --> [Merged Output] --> All clients
+[Client C] -->
+```
+
+---
+
+## ✅ Summary
+
+- **WebRTC** provides ultra-low latency and is perfect for browser-based real-time communication.
+- Unlike traditional streaming (e.g., HLS), WebRTC uses a decentralized peer-to-peer model.
+- Core concepts include ICE, SDP, signaling, and P2P.
+- WebRTC can be scaled using SFU or MCU architectures depending on the use case.
+
+---
+
+## 📚 Further Reading
+
+- [WebRTC Official Site](https://webrtc.org/)
+- [MDN WebRTC Guide](https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API)
+
