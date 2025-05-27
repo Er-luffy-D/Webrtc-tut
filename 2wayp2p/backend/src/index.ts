@@ -55,3 +55,6 @@ server.on("connection", (ws) => {
 		console.log("Client disconnected");
 	});
 });
+
+
+// all message types are
