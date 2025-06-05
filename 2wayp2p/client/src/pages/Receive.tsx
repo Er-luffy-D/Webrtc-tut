@@ -70,6 +70,14 @@ export const Receive = () => {
 		// Remove handleVideo() from here
 	}, []);
 
+	if (!socket) {
+		return (
+			<div className="min-h-screen bg-neutral-900 flex items-center justify-center">
+				<p className="text-white">Connecting to server...</p>
+			</div>
+		);
+	}
+
 	return (
 		<div className="min-h-screen bg-neutral-900 flex flex-col items-center justify-center p-4">
 			<div className="max-w-md w-full mx-auto p-6 space-y-6 flex flex-col items-center text-white mb-8">
