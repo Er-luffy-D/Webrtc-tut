@@ -3,7 +3,7 @@ import WebSocket, { WebSocketServer } from "ws";
 // all message types are
 // sender,reciever,create-offer,create-answer,ice-candidate
 
-const server = new WebSocketServer({ port: 8080 });
+const server = new WebSocketServer({ port: parseInt(process.env.PORT || "8080") });
 let senderWs: WebSocket | null = null;
 let receiverWs: WebSocket | null = null;
 server.on("connection", (ws) => {
@@ -55,6 +55,5 @@ server.on("connection", (ws) => {
 		console.log("Client disconnected");
 	});
 });
-
 
 // all message types are
