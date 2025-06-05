@@ -21,7 +21,7 @@ export const Receive = () => {
 	};
 
 	useEffect(() => {
-		const socket = new WebSocket("ws://localhost:8080/"); // Connect to signaling server
+		const socket = new WebSocket(import.meta.env.VITE_BACKEND_URL); // Connect to signaling server
 		socket.onopen = () => {
 			socket.send(JSON.stringify({ type: "receiver" })); // Identify as receiver
 		};

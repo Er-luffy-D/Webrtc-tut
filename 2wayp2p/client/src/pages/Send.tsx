@@ -8,7 +8,7 @@ export const Send = () => {
 
 	useEffect(() => {
 		// create websocket connection to signaling server
-		const socket = new WebSocket("ws://localhost:8080");
+		const socket = new WebSocket(import.meta.env.VITE_BACKEND_URL);
 		socket.onopen = () => {
 			// identify as sender to server
 			socket.send(JSON.stringify({ type: "sender" }));
