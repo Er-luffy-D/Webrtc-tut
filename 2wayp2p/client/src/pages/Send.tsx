@@ -51,7 +51,9 @@ export const Send = () => {
 		}
 
 		// create new RTCPeerConnection
-		const pc = new RTCPeerConnection();
+		const pc = new RTCPeerConnection({iceServers: [
+    { urls: 'stun:stun.l.google.com:19302' } // Free public STUN server
+  ]});
 		pcRef.current = pc;
 
 		// adding stream in pc
