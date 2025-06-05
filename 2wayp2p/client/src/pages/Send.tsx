@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 export const Send = () => {
 	const [sender, setSender] = useState<null | WebSocket>(null);
+	const [isSending, setIsSending] = useState(false); // New state to track sending
 	const pcRef = useRef<RTCPeerConnection | null>(null);
 	const videoRef = useRef<HTMLVideoElement>(null);
 	const remoteRef = useRef<HTMLVideoElement>(null);
@@ -40,6 +41,8 @@ export const Send = () => {
 
 	const SendVideo = async () => {
 		if (!sender) return;
+
+		setIsSending(true); // Hide button when sending starts
 
 		// getting stream
 		const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
@@ -93,13 +96,15 @@ export const Send = () => {
 				<p className="text-center font-medium bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 text-transparent bg-clip-text text-5xl">
 					Click to send videos
 				</p>
-				<button
-					onClick={SendVideo}
-					className="bg-blue-500 px-6 py-3 rounded-xl hover:bg-blue-600 transition-all 
+				{!isSending && (
+					<button
+						onClick={SendVideo}
+						className="bg-blue-500 px-6 py-3 rounded-xl hover:bg-blue-600 transition-all 
                 font-medium text-white uppercase tracking-wider shadow-md hover:shadow-lg"
-				>
-					Start Video Call
-				</button>
+					>
+						Start Video Call
+					</button>
+				)}
 			</div>
 
 			<div className="w-full md:px-4 flex flex-col md:flex-row items-center justify-center gap-8 mb-5">
