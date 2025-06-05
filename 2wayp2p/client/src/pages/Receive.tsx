@@ -31,7 +31,9 @@ export const Receive = () => {
 		socket.onmessage = async (event) => {
 			const message = JSON.parse(event.data);
 			if (message.type === "create-offer") {
-				const pc = new RTCPeerConnection(); // Create new peer connection
+				const pc = new RTCPeerConnection({iceServers: [
+    { urls: 'stun:stun.l.google.com:19302' } // Free public STUN server
+  ]}); // Create new peer connection
 				peer.current = pc; // Store peer connection in ref
 
 				pc.onicecandidate = (data) => {
